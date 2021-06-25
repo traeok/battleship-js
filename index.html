@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Battleship</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,700;1,500&display=swap');
+    </style>
+    <style>
+        body 
+        {
+            background-color: #171717;
+            text-align: center;
+            font-family: 'Chakra Petch', sans-serif;
+            color: #fff;
+        }
+
+        #boards 
+        {
+            z-index: 10;
+            justify-content: center;
+            position: relative;
+            /* display: flex; */
+            display: none;
+            border-bottom: 1px solid #777;
+        }
+
+        #container, #enemy-container 
+        {
+            width: 640px;
+            height: 640px;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+        }
+
+        #container div, #enemy-container div 
+        {
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #separator
+        {
+            height: 730px;
+            border-left: 1px solid #777;
+            margin-top: -26px;
+            margin-left: 32px;
+            padding-right: 20px;
+        }
+
+        #numbers, #enemy-numbers
+        {
+        	position: relative;
+        	display: grid;
+            width: 32px;
+            height: 640px;
+        }
+
+        .number
+        {
+            width: 32px;
+            height: 64px;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .number-padding
+        {
+            width: 32px;
+            height: 40px;
+        }
+
+        #welcome
+        {
+            display: block;
+            margin-top: 50px;
+        }
+
+        #next-player
+        {
+            display: none;
+            width: 320px;
+            margin: 0 auto;
+            margin-top: 50px;
+            border: 1px solid #777;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .emptyspace, .sub, .bship, .ac 
+        {
+            background-color: #444444;
+            width: 62px;
+            height: 62px;
+            border: 1px dotted black;
+        }
+
+        #hit-overlay
+        {
+            background-color: rgba(255,0,0,0.9);
+            border-radius: 6px;
+            z-index: 20;
+            width: 320px;
+            height: 80px;
+            position: relative;
+            margin: 0 auto;
+            padding-top: 1em;
+            transform: translateY(-350%);
+            display: none;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+
+        #miss-overlay
+        {
+            background-color: #EDEDED;
+            border-radius: 6px;
+            z-index: 20;
+            width: 320px;
+            height: 80px;
+            position: relative;
+            margin: 0 auto;
+            padding-top: 1em;
+            transform: translateY(-350%);
+            display: none;
+            font-weight: bold;
+            color: black;
+            cursor: pointer;
+        }
+
+        #names
+        {
+            width: 100%;
+            display: none;
+        }
+
+        #plnametag
+        {
+            font-weight: bold;
+            text-align: left;
+            flex: 1;
+        }
+
+        #enemynametag
+        {
+            font-weight: bold;
+            text-align: right;
+            flex: 1;
+        }
+
+        #inputerror
+        {
+            font-weight: oblique;
+            display: none;
+        }
+
+        #leaderboards
+        {
+            display: none;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="nametags">
+    <div id="plnametag">
+
+    </div>
+    <div id="enemynametag">
+
+    </div>
+</div>
+
+<div id="boards">
+	<div id="numbers">
+        <div class="number-padding"></div>
+        <div class="number">1</div>
+        <div class="number">2</div>
+        <div class="number">3</div>
+        <div class="number">4</div>
+        <div class="number">5</div>
+        <div class="number">6</div>
+        <div class="number">7</div>
+        <div class="number">8</div>
+        <div class="number">9</div>
+        <div class="number">10</div>
+    </div>
+    <div id="container">
+        <div>A</div>
+        <div>B</div>
+        <div>C</div>
+        <div>D</div>
+        <div>E</div>
+        <div>F</div>
+        <div>G</div>
+        <div>H</div>
+        <div>I</div>
+        <div>J</div>
+    </div>
+	
+    <div id="separator">
+    </div>
+
+	<div id="enemy-numbers">
+        <div class="number-padding"></div>
+        <div class="number">1</div>
+        <div class="number">2</div>
+        <div class="number">3</div>
+        <div class="number">4</div>
+        <div class="number">5</div>
+        <div class="number">6</div>
+        <div class="number">7</div>
+        <div class="number">8</div>
+        <div class="number">9</div>
+        <div class="number">10</div>
+    </div>
+	<div id="enemy-container">
+        <div>A</div>
+        <div>B</div>
+        <div>C</div>
+        <div>D</div>
+        <div>E</div>
+        <div>F</div>
+        <div>G</div>
+        <div>H</div>
+        <div>I</div>
+        <div>J</div>
+	</div>
+</div>
+
+<div id="hit-overlay">
+</div>
+
+<div id="miss-overlay">
+</div>
+
+<div id="next-player">
+</div>
+
+<div id="welcome">
+    <h2 id="currentplayer">Player 1</h2>
+    <p>Enter in a name:</p>
+    <input type="text" id="plname" name="Player Name">
+    <br/>
+    <p>Enter in the ship positions:</p>
+    <input type="text" id="plpos" name="Player Positions">
+    <br/><br/>
+    <button id="plsubmit">Submit</button>
+    <br/><br/>
+    <div id="inputerror"></div>
+</div>
+
+<div id="leaderboards">
+</div>
+
+<script src="bship.js"></script>
+</body>
+</html>
