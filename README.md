@@ -3,6 +3,7 @@ A minimalistic Battleship clone in HTML, styled by CSS and powered by JS
 
 
 - Each player has the right to 3 pieces: an aircraft carrier, battleship, and submarine.
+  - Aircraft carriers are 5 spaces long, battleships are 4 spaces long, and submarines are 3 spaces long. 
 - To place each item, they must be input in the following Regex format:
 ```javascript
 /([ABSabs]{1})[:]?[\(]?([a-jA-J]{1}[1-9]{1}[0]?)-([a-jA-J]{1}[1-9]{1}[0]?)[\)]?/
