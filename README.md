@@ -11,5 +11,7 @@ A minimalistic Battleship clone in HTML, styled by CSS and powered by JS
 - To break this down: **A/B/S** to designate the piece, followed by a colon and its coordinates
 - Coordinates can be placed in parentheses or immediately after the colon
 - Separate each piece's information with a semi-colon
+- **Example input:** A(A1-A5); B(B1-B4); S(C1-C3)
+  - Would create an aircraft carrier from A1-A5, a battleship from B1-B4, and a submarine from C1-C3
 
 This project was created in response to a set of requirements. It is all my own and I own the rights to this work (in simple terms, you can't use this code.)
